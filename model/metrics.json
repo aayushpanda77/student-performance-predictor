@@ -1,0 +1,24 @@
+{
+    "algorithm": "Linear Regression",
+    "features": [
+        "study_hours_per_day",
+        "attendance_percent",
+        "assignment_score",
+        "sleep_hours"
+    ],
+    "target": "final_score",
+    "dataset_size": 1000,
+    "train_size": 800,
+    "test_size": 200,
+    "mae": 2.3739,
+    "mse": 8.9887,
+    "rmse": 2.9981,
+    "r2_score": 0.8743,
+    "coefficients": {
+        "study_hours_per_day": 2.9873,
+        "attendance_percent": 0.2407,
+        "assignment_score": 0.3771,
+        "sleep_hours": 1.2546
+    },
+    "intercept": 7.3621
+}
