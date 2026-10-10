@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Performance Predictor | AI/ML Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-card: rgba(15, 23, 42, 0.85);
+      --bg-card-inner: rgba(30, 41, 59, 0.55);
+      --border-subtle: rgba(148, 163, 184, 0.16);
+      --border-accent: rgba(56, 189, 248, 0.35);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #38bdf8;
+      --accent-indigo: #818cf8;
+      --accent-purple: #c084fc;
+      --success: #4ade80;
+      --warning: #fbbf24;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at 15% 15%, #1e1b4b 0%, #090d16 45%, #020617 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 1.75rem 2.5rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+    }
+
+    .dashboard-wrapper {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.85) 60%, rgba(51, 65, 85, 0.75) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 2rem 2.5rem;
+      margin-bottom: 1.75rem;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .hero-title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-subtitle {
+      color: #cbd5e1;
+      font-size: 1.02rem;
+      max-width: 680px;
+    }
+
+    .badge-row {
+      display: flex;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
+
+    .badge {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--accent-blue);
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* Main Workspace Grid */
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.12fr;
+      gap: 1.75rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 1024px) {
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 1.75rem 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(12px);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .panel-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #f1f5f9;
+    }
+
+    /* Preset Buttons */
+    .preset-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .preset-btn {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid var(--border-subtle);
+      color: #cbd5e1;
+      padding: 0.3rem 0.7rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .preset-btn:hover {
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+      background: rgba(56, 189, 248, 0.1);
+    }
+
+    /* Input Controls */
+    .inputs-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .inputs-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .input-box {
+      background: var(--bg-card-inner);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.1rem 1.2rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .input-box:hover, .input-box:focus-within {
+      border-color: rgba(129, 140, 248, 0.45);
+    }
+
+    .input-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.65rem;
+    }
+
+    .input-label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .input-val-badge {
+      background: rgba(129, 140, 248, 0.16);
+      color: #a5b4fc;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: #6366f1;
+      cursor: pointer;
+      height: 6px;
+      border-radius: 4px;
+    }
+
+    .range-limits {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+    }
+
+    .predict-btn {
+      width: 100%;
+      background: linear-gradient(90deg, #2563eb, #4f46e5, #7c3aed);
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 0.95rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .predict-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.55);
+    }
+
+    .predict-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Right Panel: Result Display */
+    .score-showcase {
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.75), rgba(15, 23, 42, 0.9));
+      border: 1px solid rgba(129, 140, 248, 0.28);
+      border-radius: 16px;
+      padding: 1.75rem;
+      text-align: center;
+      margin-bottom: 1.25rem;
+      transition: transform 0.2s ease;
+    }
+
+    .score-caption {
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .score-big {
+      font-size: 4.2rem;
+      font-weight: 800;
+      line-height: 1.05;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.75rem;
+    }
+
+    .score-out-of {
+      font-size: 1.65rem;
+      color: #64748b;
+      -webkit-text-fill-color: #64748b;
+    }
+
+    .status-pill {
+      display: inline-block;
+      padding: 0.35rem 1.1rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 0.85rem;
+    }
+
+    .pill-excellent {
+      background: rgba(34, 197, 94, 0.18);
+      color: #4ade80;
+      border: 1px solid rgba(74, 222, 128, 0.4);
+    }
+
+    .pill-good {
+      background: rgba(56, 189, 248, 0.18);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+
+    .pill-improve {
+      background: rgba(251, 191, 36, 0.18);
+      color: #fbbf24;
+      border: 1px solid rgba(251, 191, 36, 0.4);
+    }
+
+    .interpretation-text {
+      color: #cbd5e1;
+      font-size: 0.92rem;
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    /* Progress Meter */
+    .meter-container {
+      margin: 1.15rem 0 0.25rem 0;
+    }
+
+    .meter-bar-bg {
+      width: 100%;
+      height: 10px;
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .meter-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+      border-radius: 999px;
+      width: 84%;
+      transition: width 0.35s ease;
+    }
+
+    /* Factor Contributions */
+    .contrib-title {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.65rem;
+    }
+
+    .contrib-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 0.9rem;
+    }
+
+    @media (max-width: 600px) {
+      .contrib-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .contrib-item {
+      background: var(--bg-card-inner);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 0.65rem 0.75rem;
+      text-align: center;
+    }
+
+    .contrib-name {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .contrib-pts {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    .disclaimer-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* KPI Metrics Bar */
+    .section-heading {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: #f1f5f9;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    .kpi-label {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .kpi-value {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #f8fafc;
+    }
+
+    /* Visualizations Tabs */
+    .tabs-bar {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      color: #cbd5e1;
+      padding: 0.65rem 1.25rem;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active, .tab-btn:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent-blue);
+      color: var(--accent-blue);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .charts-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+
+    .charts-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+
+    @media (max-width: 960px) {
+      .charts-grid-3, .charts-grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .chart-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 0.6rem;
+    }
+
+    .chart-caption {
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      font-weight: 500;
+    }
+
+    .formula-box {
+      background: var(--bg-card-inner);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: left;
+    }
+
+    .formula-code {
+      font-family: monospace;
+      background: rgba(9, 13, 22, 0.8);
+      padding: 0.9rem 1rem;
+      border-radius: 8px;
+      color: #38bdf8;
+      font-size: 0.92rem;
+      margin: 0.85rem 0;
+      overflow-x: auto;
+    }
+
+    footer {
+      margin-top: 2.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border-subtle);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-wrapper">
+    <!-- Top Hero Banner -->
+    <header class="hero-banner">
+      <div>
+        <h1 class="hero-title">🎓 Student Performance Predictor</h1>
+        <p class="hero-subtitle">
+          Predict a student's expected final score using academic and lifestyle factors powered by Supervised Machine Learning.
+        </p>
+        <div class="badge-row">
+          <span class="badge">Algorithm: Linear Regression</span>
+          <span class="badge">R² Score: 87.43%</span>
+          <span class="badge">MAE: 2.37</span>
+          <span class="badge">1,000 Student Dataset</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Full-Screen Two-Column Workspace -->
+    <section class="workspace-grid">
+      <!-- Left Column: Interactive Student Inputs -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <h2 class="panel-title">🎛️ Student Profile Inputs</h2>
+          <div class="preset-group">
+            <button class="preset-btn" onclick="applyPreset(8.5, 95, 92, 8.0)">High Achiever</button>
+            <button class="preset-btn" onclick="applyPreset(5.5, 85, 76, 7.0)">Average</button>
+            <button class="preset-btn" onclick="applyPreset(2.0, 60, 50, 5.0)">Needs Help</button>
+          </div>
+        </div>
+
+        <div class="inputs-grid">
+          <!-- Study Hours -->
+          <div class="input-box">
+            <div class="input-top">
+              <label class="input-label" for="studyHours">📖 Study Hours / Day</label>
+              <span class="input-val-badge" id="studyHoursVal">6.0 hrs</span>
+            </div>
+            <input type="range" id="studyHours" min="0" max="14" step="0.5" value="6.0" oninput="updatePrediction()" />
+            <div class="range-limits"><span>0 hrs</span><span>14 hrs</span></div>
+          </div>
+
+          <!-- Attendance Percentage -->
+          <div class="input-box">
+            <div class="input-top">
+              <label class="input-label" for="attendance">📅 Attendance (%)</label>
+              <span class="input-val-badge" id="attendanceVal">85%</span>
+            </div>
+            <input type="range" id="attendance" min="0" max="100" step="1" value="85" oninput="updatePrediction()" />
+            <div class="range-limits"><span>0%</span><span>100%</span></div>
+          </div>
+
+          <!-- Assignment Score -->
+          <div class="input-box">
+            <div class="input-top">
+              <label class="input-label" for="assignment">📝 Assignment Score</label>
+              <span class="input-val-badge" id="assignmentVal">78 / 100</span>
+            </div>
+            <input type="range" id="assignment" min="0" max="100" step="1" value="78" oninput="updatePrediction()" />
+            <div class="range-limits"><span>0</span><span>100</span></div>
+          </div>
+
+          <!-- Sleep Hours -->
+          <div class="input-box">
+            <div class="input-top">
+              <label class="input-label" for="sleepHours">😴 Sleep Hours / Day</label>
+              <span class="input-val-badge" id="sleepHoursVal">7.0 hrs</span>
+            </div>
+            <input type="range" id="sleepHours" min="0" max="14" step="0.5" value="7.0" oninput="updatePrediction()" />
+            <div class="range-limits"><span>0 hrs</span><span>14 hrs</span></div>
+          </div>
+        </div>
+
+        <button class="predict-btn" onclick="triggerPredictAnimation()">🚀 Predict Final Score</button>
+      </div>
+
+      <!-- Right Column: Prediction & Breakdown -->
+      <div class="panel-card">
+        <div class="panel-header">
+          <h2 class="panel-title">🎯 Prediction & Score Breakdown</h2>
+        </div>
+
+        <div class="score-showcase" id="scoreCard">
+          <div class="score-caption">Predicted Final Academic Score</div>
+          <div class="score-big">
+            <span id="predictedScoreDisplay">83.96</span>
+            <span class="score-out-of">/ 100</span>
+          </div>
+          <div id="statusBadge" class="status-pill pill-good">Good</div>
+          <p id="interpretationText" class="interpretation-text">
+            Solid academic standing. Increasing daily study time or assignment preparation can push this score into the 85+ bracket.
+          </p>
+
+          <div class="meter-container">
+            <div class="meter-bar-bg">
+              <div class="meter-bar-fill" id="scoreMeterFill" style="width: 83.96%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="contrib-title">Estimated Points Contributed by Each Factor</div>
+        <div class="contrib-grid">
+          <div class="contrib-item">
+            <div class="contrib-name">Study Hours</div>
+            <div class="contrib-pts" id="contribStudy">+17.9 pts</div>
+          </div>
+          <div class="contrib-item">
+            <div class="contrib-name">Attendance</div>
+            <div class="contrib-pts" id="contribAtt">+20.5 pts</div>
+          </div>
+          <div class="contrib-item">
+            <div class="contrib-name">Assignments</div>
+            <div class="contrib-pts" id="contribAsgn">+29.4 pts</div>
+          </div>
+          <div class="contrib-item">
+            <div class="contrib-name">Sleep Rest</div>
+            <div class="contrib-pts" id="contribSleep">+8.8 pts</div>
+          </div>
+        </div>
+
+        <p class="disclaimer-note">
+          ℹ️ Disclaimer: This prediction is for educational purposes only and should not be treated as an official academic assessment.
+        </p>
+      </div>
+    </section>
+
+    <!-- Model Evaluation Metrics Row -->
+    <h2 class="section-heading">📊 Model Evaluation Metrics (Test Set)</h2>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">R² Score (Variance Explained)</div>
+        <div class="kpi-value">0.8743 (87.4%)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Mean Absolute Error (MAE)</div>
+        <div class="kpi-value">2.3739</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Mean Squared Error (MSE)</div>
+        <div class="kpi-value">8.9887</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Dataset Size</div>
+        <div class="kpi-value">1,000 Records</div>
+      </div>
+    </section>
+
+    <!-- Exploratory Data Analysis & Visualizations -->
+    <h2 class="section-heading">📈 Exploratory Data Analysis & Model Insights</h2>
+    <div class="tabs-bar">
+      <button class="tab-btn active" onclick="switchTab('tab-rel', this)">Feature Relationships</button>
+      <button class="tab-btn" onclick="switchTab('tab-corr', this)">Correlation & Score Distribution</button>
+      <button class="tab-btn" onclick="switchTab('tab-acc', this)">Model Accuracy & Equation</button>
+    </div>
+
+    <!-- Tab 1 -->
+    <div id="tab-rel" class="tab-content active">
+      <div class="charts-grid-3">
+        <div class="chart-card">
+          <img src="images/study_hours_vs_score.png" alt="Study Hours vs Final Score" />
+          <div class="chart-caption">Study Hours per Day vs Final Score</div>
+        </div>
+        <div class="chart-card">
+          <img src="images/attendance_vs_score.png" alt="Attendance vs Final Score" />
+          <div class="chart-caption">Attendance Percentage vs Final Score</div>
+        </div>
+        <div class="chart-card">
+          <img src="images/assignment_vs_score.png" alt="Assignment Score vs Final Score" />
+          <div class="chart-caption">Assignment Score vs Final Score</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2 -->
+    <div id="tab-corr" class="tab-content">
+      <div class="charts-grid-2">
+        <div class="chart-card">
+          <img src="images/correlation_heatmap.png" alt="Correlation Heatmap" />
+          <div class="chart-caption">Feature Correlation Heatmap</div>
+        </div>
+        <div class="chart-card">
+          <img src="images/score_distribution.png" alt="Score Distribution" />
+          <div class="chart-caption">Distribution of Final Academic Scores</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3 -->
+    <div id="tab-acc" class="tab-content">
+      <div class="charts-grid-2">
+        <div class="chart-card">
+          <img src="images/actual_vs_predicted.png" alt="Actual vs Predicted Scores" />
+          <div class="chart-caption">Actual vs Predicted Final Scores (20% Unseen Test Set)</div>
+        </div>
+        <div class="formula-box">
+          <h3 style="margin-bottom: 0.6rem; color: #f8fafc;">How the Linear Regression Model Works</h3>
+          <p style="color: #cbd5e1; font-size: 0.92rem;">
+            Trained using Scikit-learn's <code>LinearRegression</code> on 800 training records and evaluated on 200 test records, the model computes predictions using the learned equation:
+          </p>
+          <div class="formula-code">
+            Final Score = 7.3621 + (2.9873 × Study Hours) + (0.2407 × Attendance) + (0.3771 × Assignment) + (1.2546 × Sleep)
+          </div>
+          <ul style="color: #cbd5e1; font-size: 0.9rem; padding-left: 1.2rem; line-height: 1.8;">
+            <li><strong>Intercept (β₀):</strong> <code>7.3621</code></li>
+            <li><strong>Study Hours Weight (β₁):</strong> <code>+2.9873</code> pts per daily hour</li>
+            <li><strong>Attendance Weight (β₂):</strong> <code>+0.2407</code> pts per percentage point</li>
+            <li><strong>Assignment Weight (β₃):</strong> <code>+0.3771</code> pts per assignment mark</li>
+            <li><strong>Sleep Hours Weight (β₄):</strong> <code>+1.2546</code> pts per sleep hour</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      Developed by <strong>Ayush Panda</strong> &middot; B.Tech Artificial Intelligence &middot; SRM Institute of Science and Technology, Chennai
+    </footer>
+  </div>
+
+  <script>
+    // Exact trained coefficients from Scikit-learn LinearRegression (model/metrics.json)
+    const MODEL = {
+      intercept: 7.3621,
+      weights: {
+        study_hours_per_day: 2.9873,
+        attendance_percent: 0.2407,
+        assignment_score: 0.3771,
+        sleep_hours: 1.2546
+      }
+    };
+
+    function updatePrediction() {
+      const study = parseFloat(document.getElementById('studyHours').value);
+      const attendance = parseFloat(document.getElementById('attendance').value);
+      const assignment = parseFloat(document.getElementById('assignment').value);
+      const sleep = parseFloat(document.getElementById('sleepHours').value);
+
+      // Update badges next to sliders
+      document.getElementById('studyHoursVal').textContent = study.toFixed(1) + ' hrs';
+      document.getElementById('attendanceVal').textContent = attendance.toFixed(0) + '%';
+      document.getElementById('assignmentVal').textContent = assignment.toFixed(0) + ' / 100';
+      document.getElementById('sleepHoursVal').textContent = sleep.toFixed(1) + ' hrs';
+
+      // Individual contributions
+      const cStudy = study * MODEL.weights.study_hours_per_day;
+      const cAtt = attendance * MODEL.weights.attendance_percent;
+      const cAsgn = assignment * MODEL.weights.assignment_score;
+      const cSleep = sleep * MODEL.weights.sleep_hours;
+
+      document.getElementById('contribStudy').textContent = '+' + cStudy.toFixed(1) + ' pts';
+      document.getElementById('contribAtt').textContent = '+' + cAtt.toFixed(1) + ' pts';
+      document.getElementById('contribAsgn').textContent = '+' + cAsgn.toFixed(1) + ' pts';
+      document.getElementById('contribSleep').textContent = '+' + cSleep.toFixed(1) + ' pts';
+
+      // Raw linear regression prediction clamped to [0, 100]
+      const rawScore = MODEL.intercept + cStudy + cAtt + cAsgn + cSleep;
+      const clampedScore = Math.max(0.0, Math.min(100.0, rawScore));
+
+      document.getElementById('predictedScoreDisplay').textContent = clampedScore.toFixed(2);
+      document.getElementById('scoreMeterFill').style.width = clampedScore.toFixed(1) + '%';
+
+      const badge = document.getElementById('statusBadge');
+      const interp = document.getElementById('interpretationText');
+
+      if (clampedScore >= 85.0) {
+        badge.textContent = 'Excellent';
+        badge.className = 'status-pill pill-excellent';
+        interp.textContent = 'Outstanding academic trajectory! Maintaining these study and attendance habits will yield top-tier results.';
+      } else if (clampedScore >= 60.0) {
+        badge.textContent = 'Good';
+        badge.className = 'status-pill pill-good';
+        interp.textContent = 'Solid academic standing. Increasing daily study time or assignment preparation can push this score into the 85+ bracket.';
+      } else {
+        badge.textContent = 'Needs Improvement';
+        badge.className = 'status-pill pill-improve';
+        interp.textContent = 'Academic intervention recommended. Boosting class attendance and dedicating more hours to daily study will significantly raise performance.';
+      }
+    }
+
+    function applyPreset(study, att, asgn, sleep) {
+      document.getElementById('studyHours').value = study;
+      document.getElementById('attendance').value = att;
+      document.getElementById('assignment').value = asgn;
+      document.getElementById('sleepHours').value = sleep;
+      updatePrediction();
+      triggerPredictAnimation();
+    }
+
+    function triggerPredictAnimation() {
+      updatePrediction();
+      const card = document.getElementById('scoreCard');
+      card.style.transform = 'scale(1.02)';
+      setTimeout(() => {
+        card.style.transform = 'scale(1)';
+      }, 180);
+    }
+
+    function switchTab(tabId, btnEl) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btnEl.classList.add('active');
+    }
+
+    // Initialize on page load
+    updatePrediction();
+  </script>
+</body>
+</html>

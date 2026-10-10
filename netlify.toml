@@ -1,0 +1,4 @@
+[build]
+  base = "web"
+  publish = "."
+  command = "echo 'Student Performance Predictor web dashboard ready'"
