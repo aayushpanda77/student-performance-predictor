@@ -175,6 +175,10 @@ python train_model.py
 ### 3. Launch the Streamlit Web Application
 To run the interactive web interface:
 ```bash
+# Recommended command (works everywhere on Windows):
+python -m streamlit run app.py
+
+# Or if your virtual environment is activated:
 streamlit run app.py
 ```
 After running this command, open your web browser and navigate to:
