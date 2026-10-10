@@ -160,28 +160,10 @@ IMAGES_DIR = os.path.join(BASE_DIR, "images")
 
 @st.cache_resource
 def load_trained_model():
-    """Load the serialized Linear Regression model, with automatic cloud fallback."""
-    if os.path.exists(MODEL_PATH):
-        try:
-            return joblib.load(MODEL_PATH)
-        except Exception:
-            pass
-
-    # Fallback: train directly from dataset if cloud Python/sklearn version differs
-    data_path = os.path.join(BASE_DIR, "data", "student_performance.csv")
-    if os.path.exists(data_path):
-        from sklearn.linear_model import LinearRegression
-        from sklearn.model_selection import train_test_split
-        df = pd.read_csv(data_path)
-        features = ["study_hours_per_day", "attendance_percent", "assignment_score", "sleep_hours"]
-        X = df[features]
-        y = df["final_score"]
-        X_train, _, y_train, _ = train_test_split(X, y, test_size=0.20, random_state=42)
-        fallback_model = LinearRegression()
-        fallback_model.fit(X_train, y_train)
-        return fallback_model
-
-    return None
+    """Load the serialized Linear Regression model."""
+    if not os.path.exists(MODEL_PATH):
+        return None
+    return joblib.load(MODEL_PATH)
 
 
 def load_metrics():
