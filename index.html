@@ -3,24 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Student Performance Predictor | AI/ML Dashboard</title>
+  <title>Student Performance Predictor | AI Analytics Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-dark: #090d16;
-      --bg-card: rgba(15, 23, 42, 0.85);
-      --bg-card-inner: rgba(30, 41, 59, 0.55);
-      --border-subtle: rgba(148, 163, 184, 0.16);
-      --border-accent: rgba(56, 189, 248, 0.35);
-      --text-main: #f8fafc;
+      --navy-header: #141e28;
+      --bg-body: #f5f7fa;
+      --bg-card: #ffffff;
+      --text-primary: #111827;
+      --text-secondary: #64748b;
       --text-muted: #94a3b8;
-      --accent-blue: #38bdf8;
-      --accent-indigo: #818cf8;
-      --accent-purple: #c084fc;
-      --success: #4ade80;
-      --warning: #fbbf24;
+      --border-light: #eef2f6;
+      --green: #16a34a;
+      --green-ring: #199a59;
+      --blue-ring: #1d6ce7;
+      --yellow-ring: #facc15;
+      --purple-ring: #8b5cf6;
+      --cyan-ring: #14b8a6;
+      --orange-ring: #fb923c;
+      --shadow-soft: 0 8px 30px rgba(15, 23, 42, 0.045);
+      --shadow-banner: 0 12px 36px rgba(15, 23, 42, 0.07);
     }
 
     * {
@@ -30,724 +34,901 @@
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: radial-gradient(circle at 15% 15%, #1e1b4b 0%, #090d16 45%, #020617 100%);
-      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-primary);
       min-height: 100vh;
-      padding: 1.75rem 2.5rem;
-      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Top Dark Navy Header */
+    .top-navy-section {
+      background-color: var(--navy-header);
+      color: #ffffff;
+      padding: 1.5rem 3rem 6.5rem 3rem;
     }
 
     @media (max-width: 768px) {
-      body {
-        padding: 1rem;
+      .top-navy-section {
+        padding: 1.25rem 1.25rem 5.5rem 1.25rem;
       }
     }
 
-    .dashboard-wrapper {
-      max-width: 1440px;
+    .top-container {
+      max-width: 1380px;
       margin: 0 auto;
     }
 
-    /* Hero Banner */
-    .hero-banner {
-      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.85) 60%, rgba(51, 65, 85, 0.75) 100%);
-      border: 1px solid var(--border-subtle);
-      border-radius: 18px;
-      padding: 2rem 2.5rem;
-      margin-bottom: 1.75rem;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+    .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding-bottom: 1.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      margin-bottom: 1.75rem;
       flex-wrap: wrap;
-      gap: 1.5rem;
+      gap: 1rem;
     }
 
-    .hero-title {
-      font-size: 2.25rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 0.4rem;
-    }
-
-    .hero-subtitle {
-      color: #cbd5e1;
-      font-size: 1.02rem;
-      max-width: 680px;
-    }
-
-    .badge-row {
+    .brand {
       display: flex;
-      gap: 0.65rem;
-      flex-wrap: wrap;
-      margin-top: 1rem;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: -0.02em;
     }
 
-    .badge {
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      color: var(--accent-blue);
-      padding: 0.35rem 0.9rem;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 600;
+    .brand-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 12px #10b981;
     }
 
-    /* Main Workspace Grid */
-    .workspace-grid {
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      font-size: 0.9rem;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .nav-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      transition: color 0.2s;
+      padding-bottom: 0.3rem;
+    }
+
+    .nav-links a.active, .nav-links a:hover {
+      color: #ffffff;
+      border-bottom: 2px solid #10b981;
+    }
+
+    .header-greeting h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      letter-spacing: -0.02em;
+    }
+
+    .header-greeting p {
+      color: #94a3b8;
+      font-size: 0.92rem;
+    }
+
+    /* Main Content Container */
+    .main-container {
+      max-width: 1380px;
+      margin: -4.2rem auto 3rem auto;
+      padding: 0 3rem;
+    }
+
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 0 1.25rem;
+      }
+    }
+
+    /* Overlapping 4-Column KPI Banner */
+    .kpi-banner {
+      background: var(--bg-card);
+      border-radius: 16px;
+      box-shadow: var(--shadow-banner);
+      padding: 1.75rem 2rem;
       display: grid;
-      grid-template-columns: 1fr 1.12fr;
-      gap: 1.75rem;
-      margin-bottom: 2rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 1.75rem;
+      border: 1px solid var(--border-light);
     }
 
-    @media (max-width: 1024px) {
-      .workspace-grid {
+    @media (max-width: 992px) {
+      .kpi-banner {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .kpi-banner {
         grid-template-columns: 1fr;
       }
     }
 
-    .panel-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 18px;
-      padding: 1.75rem 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-      backdrop-filter: blur(12px);
+    .kpi-col {
+      padding-right: 1.25rem;
+      border-right: 1px solid #e2e8f0;
     }
 
-    .panel-header {
+    .kpi-col:last-child {
+      border-right: none;
+      padding-right: 0;
+    }
+
+    @media (max-width: 992px) {
+      .kpi-col:nth-child(2) {
+        border-right: none;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .kpi-col {
+        border-right: none;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 1rem;
+      }
+      .kpi-col:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+    }
+
+    .kpi-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 0.55rem;
+    }
+
+    .kpi-number {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.03em;
+      margin-bottom: 0.45rem;
+      line-height: 1.1;
+    }
+
+    .kpi-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .trend-up {
+      color: #16a34a;
+      font-weight: 700;
+    }
+
+    .trend-red {
+      color: #dc2626;
+      font-weight: 700;
+    }
+
+    /* Middle 3-Card Bento Grid */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr 1.35fr;
+      gap: 1.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    @media (max-width: 1150px) {
+      .bento-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .bento-card.wide-chart {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .bento-grid {
+        grid-template-columns: 1fr;
+      }
+      .bento-card.wide-chart {
+        grid-column: span 1;
+      }
+    }
+
+    .bento-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 1.65rem 1.75rem;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-light);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 1.25rem;
-      flex-wrap: wrap;
-      gap: 0.5rem;
     }
 
-    .panel-title {
-      font-size: 1.25rem;
+    .card-title {
+      font-size: 1.15rem;
       font-weight: 700;
-      color: #f1f5f9;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
     }
 
-    /* Preset Buttons */
-    .preset-group {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .preset-btn {
-      background: rgba(30, 41, 59, 0.8);
-      border: 1px solid var(--border-subtle);
-      color: #cbd5e1;
-      padding: 0.3rem 0.7rem;
+    .card-select {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: #475569;
+      padding: 0.38rem 0.75rem;
       border-radius: 8px;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       font-weight: 600;
+      font-family: inherit;
       cursor: pointer;
-      transition: all 0.2s ease;
+      outline: none;
     }
 
-    .preset-btn:hover {
-      border-color: var(--accent-blue);
-      color: var(--accent-blue);
-      background: rgba(56, 189, 248, 0.1);
+    .card-select:hover {
+      border-color: #cbd5e1;
     }
 
-    /* Input Controls */
-    .inputs-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.25rem;
-      margin-bottom: 1.5rem;
+    /* Card 1: Sliders / Inputs */
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1.05rem;
+      margin-bottom: 1.35rem;
     }
 
-    @media (max-width: 600px) {
-      .inputs-grid {
-        grid-template-columns: 1fr;
-      }
+    .slider-item {
+      background: #f8fafc;
+      border: 1px solid #eef2f6;
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      transition: border-color 0.2s, background 0.2s;
     }
 
-    .input-box {
-      background: var(--bg-card-inner);
-      border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      padding: 1.1rem 1.2rem;
-      transition: border-color 0.2s ease;
+    .slider-item:hover {
+      border-color: #cbd5e1;
+      background: #ffffff;
     }
 
-    .input-box:hover, .input-box:focus-within {
-      border-color: rgba(129, 140, 248, 0.45);
-    }
-
-    .input-top {
+    .slider-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.65rem;
+      margin-bottom: 0.45rem;
     }
 
-    .input-label {
-      font-size: 0.88rem;
+    .slider-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.84rem;
       font-weight: 600;
-      color: #e2e8f0;
+      color: #334155;
     }
 
-    .input-val-badge {
-      background: rgba(129, 140, 248, 0.16);
-      color: #a5b4fc;
-      padding: 0.2rem 0.6rem;
-      border-radius: 6px;
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot-green { background-color: var(--green-ring); }
+    .dot-blue { background-color: var(--blue-ring); }
+    .dot-yellow { background-color: var(--yellow-ring); }
+    .dot-purple { background-color: var(--purple-ring); }
+
+    .slider-val {
       font-size: 0.85rem;
-      font-weight: 700;
+      font-weight: 800;
+      color: var(--text-primary);
     }
 
     input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
       width: 100%;
-      accent-color: #6366f1;
-      cursor: pointer;
       height: 6px;
-      border-radius: 4px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      outline: none;
+      cursor: pointer;
     }
 
-    .range-limits {
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--navy-header);
+      border: 3px solid #ffffff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+
+    .predict-action-btn {
+      width: 100%;
+      background: var(--navy-header);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.82rem 1.25rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
       display: flex;
-      justify-content: space-between;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .predict-action-btn:hover {
+      background: #1e293b;
+      transform: translateY(-1px);
+    }
+
+    /* Card 2: Donut Chart & Legend */
+    .donut-wrapper {
+      position: relative;
+      width: 190px;
+      height: 190px;
+      margin: 0.25rem auto 1.35rem auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .donut-svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .donut-segment {
+      fill: none;
+      stroke-width: 20;
+      stroke-linecap: butt;
+      transition: stroke-dasharray 0.4s ease, stroke-dashoffset 0.4s ease;
+    }
+
+    .donut-center {
+      position: absolute;
+      width: 118px;
+      height: 118px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: inset 0 2px 8px rgba(15, 23, 42, 0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .donut-score {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.1;
+    }
+
+    .donut-sub {
       font-size: 0.72rem;
       color: var(--text-muted);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .status-tag {
+      display: inline-block;
+      padding: 0.22rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
       margin-top: 0.35rem;
     }
 
-    .predict-btn {
-      width: 100%;
-      background: linear-gradient(90deg, #2563eb, #4f46e5, #7c3aed);
-      color: #ffffff;
-      border: none;
-      border-radius: 12px;
-      padding: 0.95rem 1.5rem;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    .tag-excellent {
+      background: #dcfce7;
+      color: #15803d;
     }
 
-    .predict-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 25px rgba(79, 70, 229, 0.55);
+    .tag-good {
+      background: #dbeafe;
+      color: #1d4ed8;
     }
 
-    .predict-btn:active {
-      transform: translateY(0);
+    .tag-improve {
+      background: #fef3c7;
+      color: #b45309;
     }
 
-    /* Right Panel: Result Display */
-    .score-showcase {
-      background: linear-gradient(145deg, rgba(30, 41, 59, 0.75), rgba(15, 23, 42, 0.9));
-      border: 1px solid rgba(129, 140, 248, 0.28);
-      border-radius: 16px;
-      padding: 1.75rem;
-      text-align: center;
-      margin-bottom: 1.25rem;
-      transition: transform 0.2s ease;
-    }
-
-    .score-caption {
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--text-muted);
-      margin-bottom: 0.4rem;
-    }
-
-    .score-big {
-      font-size: 4.2rem;
-      font-weight: 800;
-      line-height: 1.05;
-      background: linear-gradient(90deg, #38bdf8, #818cf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 0.75rem;
-    }
-
-    .score-out-of {
-      font-size: 1.65rem;
-      color: #64748b;
-      -webkit-text-fill-color: #64748b;
-    }
-
-    .status-pill {
-      display: inline-block;
-      padding: 0.35rem 1.1rem;
-      border-radius: 999px;
-      font-size: 0.88rem;
-      font-weight: 700;
-      margin-bottom: 0.85rem;
-    }
-
-    .pill-excellent {
-      background: rgba(34, 197, 94, 0.18);
-      color: #4ade80;
-      border: 1px solid rgba(74, 222, 128, 0.4);
-    }
-
-    .pill-good {
-      background: rgba(56, 189, 248, 0.18);
-      color: #38bdf8;
-      border: 1px solid rgba(56, 189, 248, 0.4);
-    }
-
-    .pill-improve {
-      background: rgba(251, 191, 36, 0.18);
-      color: #fbbf24;
-      border: 1px solid rgba(251, 191, 36, 0.4);
-    }
-
-    .interpretation-text {
-      color: #cbd5e1;
-      font-size: 0.92rem;
-      max-width: 540px;
-      margin: 0 auto;
-    }
-
-    /* Progress Meter */
-    .meter-container {
-      margin: 1.15rem 0 0.25rem 0;
-    }
-
-    .meter-bar-bg {
-      width: 100%;
-      height: 10px;
-      background: rgba(15, 23, 42, 0.9);
-      border-radius: 999px;
-      overflow: hidden;
-      border: 1px solid var(--border-subtle);
-    }
-
-    .meter-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
-      border-radius: 999px;
-      width: 84%;
-      transition: width 0.35s ease;
-    }
-
-    /* Factor Contributions */
-    .contrib-title {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 0.65rem;
-    }
-
-    .contrib-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.75rem;
-      margin-bottom: 0.9rem;
-    }
-
-    @media (max-width: 600px) {
-      .contrib-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    .contrib-item {
-      background: var(--bg-card-inner);
-      border: 1px solid var(--border-subtle);
-      border-radius: 10px;
-      padding: 0.65rem 0.75rem;
-      text-align: center;
-    }
-
-    .contrib-name {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-bottom: 0.2rem;
-    }
-
-    .contrib-pts {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #e2e8f0;
-    }
-
-    .disclaimer-note {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      text-align: center;
-    }
-
-    /* KPI Metrics Bar */
-    .section-heading {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      color: #f1f5f9;
-    }
-
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.25rem;
-      margin-bottom: 2rem;
-    }
-
-    @media (max-width: 900px) {
-      .kpi-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    .kpi-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      padding: 1.25rem;
-      text-align: center;
-    }
-
-    .kpi-label {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-      margin-bottom: 0.35rem;
-    }
-
-    .kpi-value {
-      font-size: 1.65rem;
-      font-weight: 800;
-      color: #f8fafc;
-    }
-
-    /* Visualizations Tabs */
-    .tabs-bar {
+    .legend-list {
       display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .legend-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+    }
+
+    .legend-name {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .legend-val {
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    /* Card 3: Smooth Line Chart (Team Performance style) */
+    .chart-legend-row {
+      display: flex;
+      gap: 1.25rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 0.75rem;
+      align-items: center;
+    }
+
+    .svg-line-container {
+      width: 100%;
+      height: 235px;
+      position: relative;
+    }
+
+    .interpretation-banner {
+      background: #f8fafc;
+      border: 1px solid #eef2f6;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      font-size: 0.82rem;
+      color: #475569;
+      margin-top: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       gap: 0.75rem;
-      margin-bottom: 1.25rem;
       flex-wrap: wrap;
     }
 
-    .tab-btn {
+    /* Bottom Section (Employees / Analytics Card Style) */
+    .bottom-card {
       background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      color: #cbd5e1;
-      padding: 0.65rem 1.25rem;
+      border-radius: 16px;
+      padding: 1.75rem 2rem;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-light);
+    }
+
+    .bottom-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
       border-radius: 10px;
-      font-size: 0.9rem;
+      padding: 0.55rem 1rem;
+      width: 320px;
+      max-width: 100%;
+      justify-content: space-between;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    .filter-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+      .filter-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .filter-select {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      background: #ffffff;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.86rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s ease;
+      outline: none;
     }
 
-    .tab-btn.active, .tab-btn:hover {
-      background: rgba(56, 189, 248, 0.15);
-      border-color: var(--accent-blue);
-      color: var(--accent-blue);
-    }
-
-    .tab-content {
-      display: none;
-    }
-
-    .tab-content.active {
-      display: block;
-    }
-
-    .charts-grid-3 {
+    .eda-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1.25rem;
     }
 
-    .charts-grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 1.25rem;
-    }
-
     @media (max-width: 960px) {
-      .charts-grid-3, .charts-grid-2 {
+      .eda-grid {
         grid-template-columns: 1fr;
       }
     }
 
-    .chart-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 14px;
-      padding: 1rem;
+    .eda-item {
+      border: 1px solid #eef2f6;
+      border-radius: 12px;
+      padding: 0.9rem;
+      background: #f8fafc;
       text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .chart-card img {
+    .eda-item:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-soft);
+      background: #ffffff;
+    }
+
+    .eda-item img {
       width: 100%;
       height: auto;
       border-radius: 8px;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.55rem;
     }
 
-    .chart-caption {
-      font-size: 0.85rem;
-      color: #cbd5e1;
-      font-weight: 500;
+    .eda-caption {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: #334155;
     }
 
-    .formula-box {
-      background: var(--bg-card-inner);
-      border: 1px solid var(--border-subtle);
-      border-radius: 12px;
-      padding: 1.5rem;
-      text-align: left;
-    }
-
-    .formula-code {
-      font-family: monospace;
-      background: rgba(9, 13, 22, 0.8);
-      padding: 0.9rem 1rem;
-      border-radius: 8px;
-      color: #38bdf8;
-      font-size: 0.92rem;
-      margin: 0.85rem 0;
-      overflow-x: auto;
-    }
-
-    footer {
-      margin-top: 2.5rem;
-      padding-top: 1.25rem;
-      border-top: 1px solid var(--border-subtle);
+    .disclaimer-footer {
+      margin-top: 2rem;
       text-align: center;
       color: var(--text-muted);
-      font-size: 0.85rem;
+      font-size: 0.8rem;
+      padding-bottom: 1rem;
     }
   </style>
 </head>
 <body>
-  <div class="dashboard-wrapper">
-    <!-- Top Hero Banner -->
-    <header class="hero-banner">
-      <div>
-        <h1 class="hero-title">🎓 Student Performance Predictor</h1>
-        <p class="hero-subtitle">
-          Predict a student's expected final score using academic and lifestyle factors powered by Supervised Machine Learning.
-        </p>
-        <div class="badge-row">
-          <span class="badge">Algorithm: Linear Regression</span>
-          <span class="badge">R² Score: 87.43%</span>
-          <span class="badge">MAE: 2.37</span>
-          <span class="badge">1,000 Student Dataset</span>
+
+  <!-- Top Dark Navy Header (Matches Reference Screenshot) -->
+  <header class="top-navy-section">
+    <div class="top-container">
+      <nav class="navbar">
+        <div class="brand">
+          <span class="brand-dot"></span>
+          <span>AcademicAI Predictor</span>
         </div>
-      </div>
-    </header>
-
-    <!-- Main Full-Screen Two-Column Workspace -->
-    <section class="workspace-grid">
-      <!-- Left Column: Interactive Student Inputs -->
-      <div class="panel-card">
-        <div class="panel-header">
-          <h2 class="panel-title">🎛️ Student Profile Inputs</h2>
-          <div class="preset-group">
-            <button class="preset-btn" onclick="applyPreset(8.5, 95, 92, 8.0)">High Achiever</button>
-            <button class="preset-btn" onclick="applyPreset(5.5, 85, 76, 7.0)">Average</button>
-            <button class="preset-btn" onclick="applyPreset(2.0, 60, 50, 5.0)">Needs Help</button>
-          </div>
+        <div class="nav-links">
+          <a href="#predictor" class="active">Dashboard</a>
+          <a href="#analytics">Visual Analytics</a>
+          <a href="#metrics">Model Metrics</a>
+          <a href="https://github.com/aayushpanda77/student-performance-predictor" target="_blank">GitHub Repo</a>
         </div>
-
-        <div class="inputs-grid">
-          <!-- Study Hours -->
-          <div class="input-box">
-            <div class="input-top">
-              <label class="input-label" for="studyHours">📖 Study Hours / Day</label>
-              <span class="input-val-badge" id="studyHoursVal">6.0 hrs</span>
-            </div>
-            <input type="range" id="studyHours" min="0" max="14" step="0.5" value="6.0" oninput="updatePrediction()" />
-            <div class="range-limits"><span>0 hrs</span><span>14 hrs</span></div>
-          </div>
-
-          <!-- Attendance Percentage -->
-          <div class="input-box">
-            <div class="input-top">
-              <label class="input-label" for="attendance">📅 Attendance (%)</label>
-              <span class="input-val-badge" id="attendanceVal">85%</span>
-            </div>
-            <input type="range" id="attendance" min="0" max="100" step="1" value="85" oninput="updatePrediction()" />
-            <div class="range-limits"><span>0%</span><span>100%</span></div>
-          </div>
-
-          <!-- Assignment Score -->
-          <div class="input-box">
-            <div class="input-top">
-              <label class="input-label" for="assignment">📝 Assignment Score</label>
-              <span class="input-val-badge" id="assignmentVal">78 / 100</span>
-            </div>
-            <input type="range" id="assignment" min="0" max="100" step="1" value="78" oninput="updatePrediction()" />
-            <div class="range-limits"><span>0</span><span>100</span></div>
-          </div>
-
-          <!-- Sleep Hours -->
-          <div class="input-box">
-            <div class="input-top">
-              <label class="input-label" for="sleepHours">😴 Sleep Hours / Day</label>
-              <span class="input-val-badge" id="sleepHoursVal">7.0 hrs</span>
-            </div>
-            <input type="range" id="sleepHours" min="0" max="14" step="0.5" value="7.0" oninput="updatePrediction()" />
-            <div class="range-limits"><span>0 hrs</span><span>14 hrs</span></div>
-          </div>
-        </div>
-
-        <button class="predict-btn" onclick="triggerPredictAnimation()">🚀 Predict Final Score</button>
+      </nav>
+      <div class="header-greeting">
+        <h1>Student Performance Predictor</h1>
+        <p>This is your Supervised Machine Learning report &amp; real-time score forecast</p>
       </div>
-
-      <!-- Right Column: Prediction & Breakdown -->
-      <div class="panel-card">
-        <div class="panel-header">
-          <h2 class="panel-title">🎯 Prediction & Score Breakdown</h2>
-        </div>
-
-        <div class="score-showcase" id="scoreCard">
-          <div class="score-caption">Predicted Final Academic Score</div>
-          <div class="score-big">
-            <span id="predictedScoreDisplay">83.96</span>
-            <span class="score-out-of">/ 100</span>
-          </div>
-          <div id="statusBadge" class="status-pill pill-good">Good</div>
-          <p id="interpretationText" class="interpretation-text">
-            Solid academic standing. Increasing daily study time or assignment preparation can push this score into the 85+ bracket.
-          </p>
-
-          <div class="meter-container">
-            <div class="meter-bar-bg">
-              <div class="meter-bar-fill" id="scoreMeterFill" style="width: 83.96%;"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="contrib-title">Estimated Points Contributed by Each Factor</div>
-        <div class="contrib-grid">
-          <div class="contrib-item">
-            <div class="contrib-name">Study Hours</div>
-            <div class="contrib-pts" id="contribStudy">+17.9 pts</div>
-          </div>
-          <div class="contrib-item">
-            <div class="contrib-name">Attendance</div>
-            <div class="contrib-pts" id="contribAtt">+20.5 pts</div>
-          </div>
-          <div class="contrib-item">
-            <div class="contrib-name">Assignments</div>
-            <div class="contrib-pts" id="contribAsgn">+29.4 pts</div>
-          </div>
-          <div class="contrib-item">
-            <div class="contrib-name">Sleep Rest</div>
-            <div class="contrib-pts" id="contribSleep">+8.8 pts</div>
-          </div>
-        </div>
-
-        <p class="disclaimer-note">
-          ℹ️ Disclaimer: This prediction is for educational purposes only and should not be treated as an official academic assessment.
-        </p>
-      </div>
-    </section>
-
-    <!-- Model Evaluation Metrics Row -->
-    <h2 class="section-heading">📊 Model Evaluation Metrics (Test Set)</h2>
-    <section class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-label">R² Score (Variance Explained)</div>
-        <div class="kpi-value">0.8743 (87.4%)</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Mean Absolute Error (MAE)</div>
-        <div class="kpi-value">2.3739</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Mean Squared Error (MSE)</div>
-        <div class="kpi-value">8.9887</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Dataset Size</div>
-        <div class="kpi-value">1,000 Records</div>
-      </div>
-    </section>
-
-    <!-- Exploratory Data Analysis & Visualizations -->
-    <h2 class="section-heading">📈 Exploratory Data Analysis & Model Insights</h2>
-    <div class="tabs-bar">
-      <button class="tab-btn active" onclick="switchTab('tab-rel', this)">Feature Relationships</button>
-      <button class="tab-btn" onclick="switchTab('tab-corr', this)">Correlation & Score Distribution</button>
-      <button class="tab-btn" onclick="switchTab('tab-acc', this)">Model Accuracy & Equation</button>
     </div>
+  </header>
 
-    <!-- Tab 1 -->
-    <div id="tab-rel" class="tab-content active">
-      <div class="charts-grid-3">
-        <div class="chart-card">
+  <!-- Main Content Overlapping Container -->
+  <main class="main-container" id="predictor">
+
+    <!-- Overlapping 4-Column White KPI Banner -->
+    <section class="kpi-banner" id="metrics">
+      <div class="kpi-col">
+        <div class="kpi-title">Model R² Accuracy</div>
+        <div class="kpi-number">87.43%</div>
+        <div class="kpi-sub"><span class="trend-up">&uarr; 0.8743</span> variance explained</div>
+      </div>
+      <div class="kpi-col">
+        <div class="kpi-title">Mean Absolute Error</div>
+        <div class="kpi-number">2.37</div>
+        <div class="kpi-sub"><span class="trend-up">&uarr; &plusmn;2.37 pts</span> avg deviation</div>
+      </div>
+      <div class="kpi-col">
+        <div class="kpi-title">Mean Squared Error</div>
+        <div class="kpi-number">8.99</div>
+        <div class="kpi-sub"><span class="trend-red">&darr; 2.99 RMSE</span> on test split</div>
+      </div>
+      <div class="kpi-col">
+        <div class="kpi-title">Training &amp; Test Dataset</div>
+        <div class="kpi-number">1,000</div>
+        <div class="kpi-sub"><span class="trend-up">&uarr; 800 train</span> / 200 test records</div>
+      </div>
+    </section>
+
+    <!-- Middle 3-Card Bento Grid -->
+    <section class="bento-grid">
+
+      <!-- Card 1: Interactive Student Factors -->
+      <div class="bento-card">
+        <div>
+          <div class="card-top">
+            <h2 class="card-title">Student Factors</h2>
+            <select class="card-select" id="presetSelect" onchange="handlePresetSelect(this.value)">
+              <option value="custom">Custom Profile</option>
+              <option value="high">High Achiever</option>
+              <option value="avg" selected>Average Student</option>
+              <option value="low">Needs Improvement</option>
+            </select>
+          </div>
+
+          <div class="slider-group">
+            <!-- Study Hours -->
+            <div class="slider-item">
+              <div class="slider-header">
+                <span class="slider-label"><span class="dot dot-green"></span>Study Hours / Day</span>
+                <span class="slider-val" id="studyHoursVal">6.0 hrs</span>
+              </div>
+              <input type="range" id="studyHours" min="0" max="14" step="0.5" value="6.0" oninput="updateDashboard()" />
+            </div>
+
+            <!-- Attendance -->
+            <div class="slider-item">
+              <div class="slider-header">
+                <span class="slider-label"><span class="dot dot-blue"></span>Attendance Percentage</span>
+                <span class="slider-val" id="attendanceVal">85%</span>
+              </div>
+              <input type="range" id="attendance" min="0" max="100" step="1" value="85" oninput="updateDashboard()" />
+            </div>
+
+            <!-- Assignments -->
+            <div class="slider-item">
+              <div class="slider-header">
+                <span class="slider-label"><span class="dot dot-purple"></span>Assignment / Test Score</span>
+                <span class="slider-val" id="assignmentVal">78 / 100</span>
+              </div>
+              <input type="range" id="assignment" min="0" max="100" step="1" value="78" oninput="updateDashboard()" />
+            </div>
+
+            <!-- Sleep -->
+            <div class="slider-item">
+              <div class="slider-header">
+                <span class="slider-label"><span class="dot dot-yellow"></span>Sleep Hours / Day</span>
+                <span class="slider-val" id="sleepHoursVal">7.0 hrs</span>
+              </div>
+              <input type="range" id="sleepHours" min="0" max="14" step="0.5" value="7.0" oninput="updateDashboard()" />
+            </div>
+          </div>
+        </div>
+
+        <button class="predict-action-btn" onclick="pulseScoreCard()">
+          <span>Predict Score</span>
+        </button>
+      </div>
+
+      <!-- Card 2: Donut Chart Summary (Matches Total Employee / Job Summary Ring) -->
+      <div class="bento-card" id="donutCard">
+        <div>
+          <div class="card-top">
+            <h2 class="card-title">Predicted Score</h2>
+            <span class="card-select" style="cursor:default;">Out of 100</span>
+          </div>
+
+          <!-- Segmented Multi-Color SVG Donut Chart -->
+          <div class="donut-wrapper">
+            <svg class="donut-svg" viewBox="0 0 120 120">
+              <!-- Background Track -->
+              <circle cx="60" cy="60" r="46" fill="none" stroke="#f1f5f9" stroke-width="18"></circle>
+              <!-- Segment 1: Study Hours (Green) -->
+              <circle id="segStudy" class="donut-segment" cx="60" cy="60" r="46" stroke="#199a59" stroke-dasharray="60 289" stroke-dashoffset="0"></circle>
+              <!-- Segment 2: Attendance (Blue) -->
+              <circle id="segAtt" class="donut-segment" cx="60" cy="60" r="46" stroke="#1d6ce7" stroke-dasharray="65 289" stroke-dashoffset="-64"></circle>
+              <!-- Segment 3: Assignments (Purple) -->
+              <circle id="segAsgn" class="donut-segment" cx="60" cy="60" r="46" stroke="#8b5cf6" stroke-dasharray="85 289" stroke-dashoffset="-133"></circle>
+              <!-- Segment 4: Sleep + Base (Yellow) -->
+              <circle id="segSleep" class="donut-segment" cx="60" cy="60" r="46" stroke="#facc15" stroke-dasharray="40 289" stroke-dashoffset="-222"></circle>
+            </svg>
+            <div class="donut-center">
+              <div class="donut-score" id="predictedScoreDisplay">83.96</div>
+              <div class="donut-sub">Final Score</div>
+              <span id="statusBadge" class="status-tag tag-good">Good</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Factor Point Breakdown Legend -->
+        <div class="legend-list">
+          <div class="legend-row">
+            <span class="legend-name"><span class="dot dot-purple"></span>Assignment Impact</span>
+            <span class="legend-val" id="contribAsgn">+29.4 pts</span>
+          </div>
+          <div class="legend-row">
+            <span class="legend-name"><span class="dot dot-blue"></span>Attendance Impact</span>
+            <span class="legend-val" id="contribAtt">+20.5 pts</span>
+          </div>
+          <div class="legend-row">
+            <span class="legend-name"><span class="dot dot-green"></span>Study Hours Impact</span>
+            <span class="legend-val" id="contribStudy">+17.9 pts</span>
+          </div>
+          <div class="legend-row">
+            <span class="legend-name"><span class="dot dot-yellow"></span>Sleep &amp; Baseline</span>
+            <span class="legend-val" id="contribSleep">+16.1 pts</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3: Performance Trajectory Curve (Matches Team Performance Card) -->
+      <div class="bento-card wide-chart">
+        <div>
+          <div class="card-top">
+            <h2 class="card-title">Score Trajectory vs. Study Hours</h2>
+            <span class="card-select" style="cursor:default;">Linear Regression &#128197;</span>
+          </div>
+
+          <div class="chart-legend-row">
+            <span><span class="dot dot-green" style="margin-right:6px;"></span>Current Student Profile</span>
+            <span><span class="dot dot-yellow" style="margin-right:6px;"></span>Class Average Baseline</span>
+          </div>
+
+          <!-- Dynamic SVG Curve Chart -->
+          <div class="svg-line-container">
+            <svg viewBox="0 0 520 220" width="100%" height="100%" preserveAspectRatio="none">
+              <!-- Horizontal Grid Lines -->
+              <line x1="45" y1="25" x2="500" y2="25" stroke="#f1f5f9" stroke-width="1.5" />
+              <line x1="45" y1="70" x2="500" y2="70" stroke="#f1f5f9" stroke-width="1.5" />
+              <line x1="45" y1="115" x2="500" y2="115" stroke="#f1f5f9" stroke-width="1.5" />
+              <line x1="45" y1="160" x2="500" y2="160" stroke="#f1f5f9" stroke-width="1.5" />
+
+              <!-- Y-Axis Labels -->
+              <text x="10" y="30" fill="#94a3b8" font-size="11" font-weight="600">100</text>
+              <text x="14" y="75" fill="#94a3b8" font-size="11" font-weight="600">85</text>
+              <text x="14" y="120" fill="#94a3b8" font-size="11" font-weight="600">70</text>
+              <text x="14" y="165" fill="#94a3b8" font-size="11" font-weight="600">55</text>
+
+              <!-- Highlight Vertical Pill (Matches April column highlight in screenshot) -->
+              <rect id="activeHighlightBar" x="230" y="15" width="38" height="165" rx="10" fill="#f8fafc" />
+
+              <!-- Baseline Curve (Yellow) -->
+              <path d="M 50 142 C 110 132, 160 118, 220 105 C 280 92, 340 78, 400 66 C 440 58, 475 50, 495 45"
+                    fill="none" stroke="#eab308" stroke-width="2.5" stroke-linecap="round" />
+
+              <!-- Dynamic Student Curve (Green) -->
+              <path id="studentCurvePath"
+                    d="M 50 135 C 110 120, 160 106, 220 92 C 280 78, 340 62, 400 48 C 440 38, 475 30, 495 25"
+                    fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" />
+
+              <!-- Interactive Active Point Dot -->
+              <circle id="activeCurveDot" cx="249" cy="84" r="6" fill="#111827" stroke="#ffffff" stroke-width="2.5" />
+
+              <!-- X-Axis Study Hours Labels -->
+              <text x="45" y="198" fill="#64748b" font-size="11" font-weight="600">1 hr</text>
+              <text x="120" y="198" fill="#64748b" font-size="11" font-weight="600">3 hrs</text>
+              <text x="195" y="198" fill="#64748b" font-size="11" font-weight="600">5 hrs</text>
+              <text x="270" y="198" fill="#64748b" font-size="11" font-weight="600">7 hrs</text>
+              <text x="345" y="198" fill="#64748b" font-size="11" font-weight="600">9 hrs</text>
+              <text x="420" y="198" fill="#64748b" font-size="11" font-weight="600">11 hrs</text>
+              <text x="480" y="198" fill="#64748b" font-size="11" font-weight="600">13h</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="interpretation-banner">
+          <span id="interpretationText">
+            <strong>Assessment:</strong> Solid academic standing. Increasing daily study time or assignment preparation can push this score into the 85+ bracket.
+          </span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Bottom Card: Exploratory Data Analysis & Visualizations (Matches Employees Section) -->
+    <section class="bottom-card" id="analytics">
+      <div class="bottom-header">
+        <h2 class="card-title" style="font-size:1.25rem;">Exploratory Data Analysis &amp; Visualizations</h2>
+        <div class="search-box">
+          <span>Linear Regression: y = 7.36 + 2.99x₁ + 0.24x₂ + 0.38x₃ + 1.25x₄</span>
+          <span>&#128269;</span>
+        </div>
+      </div>
+
+      <!-- 3 Filter Dropdowns (Matches All Offices / All Job Titles / All Status) -->
+      <div class="filter-row">
+        <select class="filter-select" id="viewCategorySelect" onchange="filterCharts(this.value)">
+          <option value="all">All Visualizations (6 Charts)</option>
+          <option value="relationships">Feature Relationships (Study, Attendance, Assignments)</option>
+          <option value="distributions">Correlation Heatmap &amp; Score Distribution</option>
+          <option value="evaluation">Model Evaluation (Actual vs. Predicted)</option>
+        </select>
+
+        <select class="filter-select" onchange="handlePresetSelect(this.value)">
+          <option value="avg">Simulate: Average Student Profile</option>
+          <option value="high">Simulate: Top Scorer Profile (95+)</option>
+          <option value="low">Simulate: At-Risk Student Profile</option>
+        </select>
+
+        <select class="filter-select">
+          <option>Model: Scikit-Learn LinearRegression (v1.9)</option>
+          <option>Split: 80% Train (800) / 20% Test (200)</option>
+          <option>Dataset: 1,000 Synthetic Student Records</option>
+        </select>
+      </div>
+
+      <!-- Charts Display Grid -->
+      <div class="eda-grid" id="chartsContainer">
+        <div class="eda-item" data-cat="relationships">
           <img src="images/study_hours_vs_score.png" alt="Study Hours vs Final Score" />
-          <div class="chart-caption">Study Hours per Day vs Final Score</div>
+          <div class="eda-caption">Study Hours per Day vs. Final Score</div>
         </div>
-        <div class="chart-card">
+        <div class="eda-item" data-cat="relationships">
           <img src="images/attendance_vs_score.png" alt="Attendance vs Final Score" />
-          <div class="chart-caption">Attendance Percentage vs Final Score</div>
+          <div class="eda-caption">Attendance Percentage vs. Final Score</div>
         </div>
-        <div class="chart-card">
+        <div class="eda-item" data-cat="relationships">
           <img src="images/assignment_vs_score.png" alt="Assignment Score vs Final Score" />
-          <div class="chart-caption">Assignment Score vs Final Score</div>
+          <div class="eda-caption">Assignment Score vs. Final Score</div>
         </div>
-      </div>
-    </div>
-
-    <!-- Tab 2 -->
-    <div id="tab-corr" class="tab-content">
-      <div class="charts-grid-2">
-        <div class="chart-card">
+        <div class="eda-item" data-cat="distributions">
           <img src="images/correlation_heatmap.png" alt="Correlation Heatmap" />
-          <div class="chart-caption">Feature Correlation Heatmap</div>
+          <div class="eda-caption">Feature Correlation Heatmap</div>
         </div>
-        <div class="chart-card">
+        <div class="eda-item" data-cat="distributions">
           <img src="images/score_distribution.png" alt="Score Distribution" />
-          <div class="chart-caption">Distribution of Final Academic Scores</div>
+          <div class="eda-caption">Distribution of Final Academic Scores</div>
+        </div>
+        <div class="eda-item" data-cat="evaluation">
+          <img src="images/actual_vs_predicted.png" alt="Actual vs Predicted" />
+          <div class="eda-caption">Actual vs. Predicted Final Scores (Test Set)</div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Tab 3 -->
-    <div id="tab-acc" class="tab-content">
-      <div class="charts-grid-2">
-        <div class="chart-card">
-          <img src="images/actual_vs_predicted.png" alt="Actual vs Predicted Scores" />
-          <div class="chart-caption">Actual vs Predicted Final Scores (20% Unseen Test Set)</div>
-        </div>
-        <div class="formula-box">
-          <h3 style="margin-bottom: 0.6rem; color: #f8fafc;">How the Linear Regression Model Works</h3>
-          <p style="color: #cbd5e1; font-size: 0.92rem;">
-            Trained using Scikit-learn's <code>LinearRegression</code> on 800 training records and evaluated on 200 test records, the model computes predictions using the learned equation:
-          </p>
-          <div class="formula-code">
-            Final Score = 7.3621 + (2.9873 × Study Hours) + (0.2407 × Attendance) + (0.3771 × Assignment) + (1.2546 × Sleep)
-          </div>
-          <ul style="color: #cbd5e1; font-size: 0.9rem; padding-left: 1.2rem; line-height: 1.8;">
-            <li><strong>Intercept (β₀):</strong> <code>7.3621</code></li>
-            <li><strong>Study Hours Weight (β₁):</strong> <code>+2.9873</code> pts per daily hour</li>
-            <li><strong>Attendance Weight (β₂):</strong> <code>+0.2407</code> pts per percentage point</li>
-            <li><strong>Assignment Weight (β₃):</strong> <code>+0.3771</code> pts per assignment mark</li>
-            <li><strong>Sleep Hours Weight (β₄):</strong> <code>+1.2546</code> pts per sleep hour</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <footer>
-      Developed by <strong>Ayush Panda</strong> &middot; B.Tech Artificial Intelligence &middot; SRM Institute of Science and Technology, Chennai
+    <footer class="disclaimer-footer">
+      <p><strong>Disclaimer:</strong> This prediction is for educational purposes only and should not be treated as an official academic assessment. Dataset is synthetic.</p>
+      <p style="margin-top:4px;">Developed by <strong>Ayush Panda</strong> &middot; B.Tech Artificial Intelligence &middot; SRM Institute of Science and Technology, Chennai</p>
     </footer>
-  </div>
+
+  </main>
 
   <script>
-    // Exact trained coefficients from Scikit-learn LinearRegression (model/metrics.json)
+    // Trained Linear Regression Parameters (from train_model.py / model/metrics.json)
     const MODEL = {
       intercept: 7.3621,
       weights: {
@@ -758,81 +939,150 @@
       }
     };
 
-    function updatePrediction() {
+    const CIRCUMFERENCE = 2 * Math.PI * 46; // ~289.03
+
+    function updateDashboard() {
       const study = parseFloat(document.getElementById('studyHours').value);
       const attendance = parseFloat(document.getElementById('attendance').value);
       const assignment = parseFloat(document.getElementById('assignment').value);
       const sleep = parseFloat(document.getElementById('sleepHours').value);
 
-      // Update badges next to sliders
+      // Update slider value labels
       document.getElementById('studyHoursVal').textContent = study.toFixed(1) + ' hrs';
       document.getElementById('attendanceVal').textContent = attendance.toFixed(0) + '%';
       document.getElementById('assignmentVal').textContent = assignment.toFixed(0) + ' / 100';
       document.getElementById('sleepHoursVal').textContent = sleep.toFixed(1) + ' hrs';
 
-      // Individual contributions
+      // Points contributed by each feature
       const cStudy = study * MODEL.weights.study_hours_per_day;
       const cAtt = attendance * MODEL.weights.attendance_percent;
       const cAsgn = assignment * MODEL.weights.assignment_score;
-      const cSleep = sleep * MODEL.weights.sleep_hours;
+      const cSleepBase = (sleep * MODEL.weights.sleep_hours) + MODEL.intercept;
 
       document.getElementById('contribStudy').textContent = '+' + cStudy.toFixed(1) + ' pts';
       document.getElementById('contribAtt').textContent = '+' + cAtt.toFixed(1) + ' pts';
       document.getElementById('contribAsgn').textContent = '+' + cAsgn.toFixed(1) + ' pts';
-      document.getElementById('contribSleep').textContent = '+' + cSleep.toFixed(1) + ' pts';
+      document.getElementById('contribSleep').textContent = '+' + cSleepBase.toFixed(1) + ' pts';
 
-      // Raw linear regression prediction clamped to [0, 100]
-      const rawScore = MODEL.intercept + cStudy + cAtt + cAsgn + cSleep;
+      // Total predicted score clamped [0, 100]
+      const rawScore = cStudy + cAtt + cAsgn + cSleepBase;
       const clampedScore = Math.max(0.0, Math.min(100.0, rawScore));
 
-      document.getElementById('predictedScoreDisplay').textContent = clampedScore.toFixed(2);
-      document.getElementById('scoreMeterFill').style.width = clampedScore.toFixed(1) + '%';
+      document.getElementById('predictedScoreDisplay').textContent = clampedScore.toFixed(1);
 
+      // Status Badge & Interpretation
       const badge = document.getElementById('statusBadge');
       const interp = document.getElementById('interpretationText');
 
       if (clampedScore >= 85.0) {
         badge.textContent = 'Excellent';
-        badge.className = 'status-pill pill-excellent';
-        interp.textContent = 'Outstanding academic trajectory! Maintaining these study and attendance habits will yield top-tier results.';
+        badge.className = 'status-tag tag-excellent';
+        interp.innerHTML = '<strong>Assessment (Excellent):</strong> Outstanding academic trajectory! Maintaining these study and attendance habits will yield top-tier results.';
       } else if (clampedScore >= 60.0) {
         badge.textContent = 'Good';
-        badge.className = 'status-pill pill-good';
-        interp.textContent = 'Solid academic standing. Increasing daily study time or assignment preparation can push this score into the 85+ bracket.';
+        badge.className = 'status-tag tag-good';
+        interp.innerHTML = '<strong>Assessment (Good):</strong> Solid academic standing. Increasing daily study time or assignment preparation can push this score into the 85+ bracket.';
       } else {
         badge.textContent = 'Needs Improvement';
-        badge.className = 'status-pill pill-improve';
-        interp.textContent = 'Academic intervention recommended. Boosting class attendance and dedicating more hours to daily study will significantly raise performance.';
+        badge.className = 'status-tag tag-improve';
+        interp.innerHTML = '<strong>Assessment (Needs Improvement):</strong> Additional academic support recommended. Boosting class attendance and daily study hours will significantly raise performance.';
+      }
+
+      // Update Segmented Donut Chart proportionally
+      const totalPositive = Math.max(1, cStudy + cAtt + cAsgn + cSleepBase);
+      const scaleFactor = (clampedScore / 100.0) * CIRCUMFERENCE;
+      const gap = 3;
+
+      const lenStudy = Math.max(2, (cStudy / totalPositive) * scaleFactor - gap);
+      const lenAtt = Math.max(2, (cAtt / totalPositive) * scaleFactor - gap);
+      const lenAsgn = Math.max(2, (cAsgn / totalPositive) * scaleFactor - gap);
+      const lenSleep = Math.max(2, (cSleepBase / totalPositive) * scaleFactor - gap);
+
+      const segStudy = document.getElementById('segStudy');
+      const segAtt = document.getElementById('segAtt');
+      const segAsgn = document.getElementById('segAsgn');
+      const segSleep = document.getElementById('segSleep');
+
+      segStudy.setAttribute('stroke-dasharray', `${lenStudy} ${CIRCUMFERENCE}`);
+      segStudy.setAttribute('stroke-dashoffset', '0');
+
+      const offAtt = -(lenStudy + gap);
+      segAtt.setAttribute('stroke-dasharray', `${lenAtt} ${CIRCUMFERENCE}`);
+      segAtt.setAttribute('stroke-dashoffset', `${offAtt}`);
+
+      const offAsgn = offAtt - (lenAtt + gap);
+      segAsgn.setAttribute('stroke-dasharray', `${lenAsgn} ${CIRCUMFERENCE}`);
+      segAsgn.setAttribute('stroke-dashoffset', `${offAsgn}`);
+
+      const offSleep = offAsgn - (lenAsgn + gap);
+      segSleep.setAttribute('stroke-dasharray', `${lenSleep} ${CIRCUMFERENCE}`);
+      segSleep.setAttribute('stroke-dashoffset', `${offSleep}`);
+
+      // Update Dynamic Trajectory Curve & Active Dot
+      // X ranges from 50 (0 hrs) to 495 (14 hrs)
+      const xPos = 50 + (study / 14.0) * 445;
+      // Y ranges from 165 (score ~45) to 25 (score 100)
+      const yPos = 165 - ((clampedScore - 45) / 55.0) * 140;
+      const clampedY = Math.max(22, Math.min(170, yPos));
+
+      const dot = document.getElementById('activeCurveDot');
+      const bar = document.getElementById('activeHighlightBar');
+      dot.setAttribute('cx', xPos.toFixed(1));
+      dot.setAttribute('cy', clampedY.toFixed(1));
+      bar.setAttribute('x', (xPos - 19).toFixed(1));
+
+      // Shift green curve vertically based on non-study factors (attendance, assignment, sleep)
+      const baseWithoutStudy = cAtt + cAsgn + cSleepBase;
+      const yStart = Math.max(35, Math.min(172, 165 - ((baseWithoutStudy - 45) / 55.0) * 140));
+      const yEnd = Math.max(20, Math.min(140, 165 - ((Math.min(100, baseWithoutStudy + 14 * 2.9873) - 45) / 55.0) * 140));
+      const yMid1 = yStart - (yStart - yEnd) * 0.35;
+      const yMid2 = yStart - (yStart - yEnd) * 0.72;
+
+      const curvePath = `M 50 ${yStart.toFixed(1)} C 160 ${yMid1.toFixed(1)}, 310 ${yMid2.toFixed(1)}, 495 ${yEnd.toFixed(1)}`;
+      document.getElementById('studentCurvePath').setAttribute('d', curvePath);
+    }
+
+    function handlePresetSelect(preset) {
+      if (preset === 'high') {
+        setInputs(8.5, 95, 92, 8.0);
+      } else if (preset === 'avg') {
+        setInputs(6.0, 85, 78, 7.0);
+      } else if (preset === 'low') {
+        setInputs(2.0, 60, 48, 5.0);
       }
     }
 
-    function applyPreset(study, att, asgn, sleep) {
+    function setInputs(study, att, asgn, sleep) {
       document.getElementById('studyHours').value = study;
       document.getElementById('attendance').value = att;
       document.getElementById('assignment').value = asgn;
       document.getElementById('sleepHours').value = sleep;
-      updatePrediction();
-      triggerPredictAnimation();
+      updateDashboard();
+      pulseScoreCard();
     }
 
-    function triggerPredictAnimation() {
-      updatePrediction();
-      const card = document.getElementById('scoreCard');
-      card.style.transform = 'scale(1.02)';
+    function pulseScoreCard() {
+      updateDashboard();
+      const card = document.getElementById('donutCard');
+      card.style.transform = 'scale(1.015)';
       setTimeout(() => {
         card.style.transform = 'scale(1)';
       }, 180);
     }
 
-    function switchTab(tabId, btnEl) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      btnEl.classList.add('active');
+    function filterCharts(category) {
+      const items = document.querySelectorAll('#chartsContainer .eda-item');
+      items.forEach(item => {
+        if (category === 'all' || item.getAttribute('data-cat') === category) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
     }
 
-    // Initialize on page load
-    updatePrediction();
+    // Initialize dashboard on load
+    updateDashboard();
   </script>
 </body>
 </html>
