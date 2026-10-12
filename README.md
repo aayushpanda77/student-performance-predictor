@@ -1,5 +1,7 @@
 # 🎓 Student Performance Predictor
 
+🌐 **Live Web Application:** [https://predictstudentperformance.netlify.app](https://predictstudentperformance.netlify.app)
+
 An end-to-end Supervised Machine Learning web application that predicts a student's expected final academic score based on study habits, attendance, test performance, and sleep duration.
 
 Built with **Python**, **Scikit-learn**, **Pandas**, **Matplotlib**, **Seaborn**, and **Streamlit**.
